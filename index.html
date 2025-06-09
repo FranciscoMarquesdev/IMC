@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitCalc Pro - Calculadora Avançada</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+      <header class="header">
+        <img class="logo" src="/img/logo.png" alt="FitCalc Pro" />
+        <p class="subtitle">
+          Calculadora Avançada de Avaliação Física e Nutricional
+        </p>
+      </header>
+
+      <div class="glass-card">
+        <form id="calculatorForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="sexo"><i class="fas fa-venus-mars"></i> Sexo</label>
+              <div class="input-wrapper">
+                <select id="sexo" class="form-control" required>
+                  <option value="">Selecione seu sexo</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="idade"
+                ><i class="fas fa-calendar-alt"></i> Idade</label
+              >
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="idade"
+                  class="form-control"
+                  placeholder="Ex: 30"
+                  min="10"
+                  max="100"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="altura"
+                ><i class="fas fa-ruler-vertical"></i> Altura (cm)</label
+              >
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="altura"
+                  class="form-control"
+                  placeholder="Ex: 175"
+                  min="100"
+                  max="250"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="peso"><i class="fas fa-weight"></i> Peso (kg)</label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="peso"
+                  class="form-control"
+                  placeholder="Ex: 70.5"
+                  min="30"
+                  max="300"
+                  step="0.1"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="objetivo"
+                ><i class="fas fa-target"></i> Objetivo</label
+              >
+              <div class="input-wrapper">
+                <select id="objetivo" class="form-control" required>
+                  <option value="">Selecione seu objetivo</option>
+                  <option value="emagrecer">Emagrecer</option>
+                  <option value="manter">Manter Peso</option>
+                  <option value="ganhar">Ganhar Massa</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="treinos"
+                ><i class="fas fa-dumbbell"></i> Treinos por Semana</label
+              >
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  id="treinos"
+                  class="form-control"
+                  placeholder="Ex: 5"
+                  min="0"
+                  max="7"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-calculator"></i> Calcular Agora
+          </button>
+        </form>
+
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Processando seus dados...</p>
+        </div>
+
+        <div id="results" class="results">
+          <div class="results-grid">
+            <div class="result-card">
+              <div class="result-header">
+                <div class="result-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="result-title">Índice de Massa Corporal</div>
+              </div>
+              <div id="imcValue" class="metric-value"></div>
+              <div class="metric-label">IMC</div>
+              <div id="imcStatus" class="imc-status"></div>
+              <div id="imcAlert"></div>
+            </div>
+
+            <div class="result-card">
+              <div class="result-header">
+                <div class="result-icon">
+                  <i class="fas fa-fire"></i>
+                </div>
+                <div class="result-title">Taxa Metabólica Basal</div>
+              </div>
+              <div id="tmbValue" class="metric-value"></div>
+              <div class="metric-label">kcal/dia</div>
+            </div>
+
+            <div class="result-card">
+              <div class="result-header">
+                <div class="result-icon">
+                  <i class="fas fa-bolt"></i>
+                </div>
+                <div class="result-title">Necessidade Calórica</div>
+              </div>
+              <div id="caloriasValue" class="metric-value"></div>
+              <div class="metric-label">kcal/dia</div>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <div class="result-title">Distribuição de Macronutrientes</div>
+            </div>
+
+            <div class="macros-grid">
+              <div class="macro-card proteins">
+                <div class="progress-ring">
+                  <svg>
+                    <circle class="bg" cx="40" cy="40" r="36"></circle>
+                    <circle
+                      class="progress"
+                      id="proteinProgress"
+                      cx="40"
+                      cy="40"
+                      r="36"
+                    ></circle>
+                  </svg>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      font-weight: 800;
+                    "
+                    id="proteinPerc"
+                  ></div>
+                </div>
+                <div id="proteinValue" class="macro-value"></div>
+                <div class="macro-label">Proteínas</div>
+              </div>
+
+              <div class="macro-card carbs">
+                <div class="progress-ring">
+                  <svg>
+                    <circle class="bg" cx="40" cy="40" r="36"></circle>
+                    <circle
+                      class="progress"
+                      id="carbProgress"
+                      cx="40"
+                      cy="40"
+                      r="36"
+                    ></circle>
+                  </svg>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      font-weight: 800;
+                    "
+                    id="carbPerc"
+                  ></div>
+                </div>
+                <div id="carbValue" class="macro-value"></div>
+                <div class="macro-label">Carboidratos</div>
+              </div>
+
+              <div class="macro-card fats">
+                <div class="progress-ring">
+                  <svg>
+                    <circle class="bg" cx="40" cy="40" r="36"></circle>
+                    <circle
+                      class="progress"
+                      id="fatProgress"
+                      cx="40"
+                      cy="40"
+                      r="36"
+                    ></circle>
+                  </svg>
+                  <div
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      font-weight: 800;
+                    "
+                    id="fatPerc"
+                  ></div>
+                </div>
+                <div id="fatValue" class="macro-value"></div>
+                <div class="macro-label">Gorduras</div>
+              </div>
+            </div>
+          </div>
+
+          <button id="btnPlan" class="btn-plan">
+            <i class="fas fa-rocket"></i> Receber Plano Personalizado
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="planModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+          <h2 class="modal-title">🎯 Plano Personalizado</h2>
+          <p>Receba seu plano nutricional e de treino personalizado!</p>
+        </div>
+
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="nome"><i class="fas fa-user"></i> Nome Completo</label>
+            <input
+              type="text"
+              id="nome"
+              class="form-control"
+              placeholder="Seu nome completo"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="seu@email.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="whatsapp"
+              ><i class="fab fa-whatsapp"></i> WhatsApp</label
+            >
+            <input
+              type="tel"
+              id="whatsapp"
+              class="form-control"
+              placeholder="(85) 999-9999"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn-send">
+            <i class="fas fa-paper-plane"></i> Enviar Dados
+          </button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <strong>Sucesso!</strong> Seus dados foram enviados. Em breve
+          entraremos em contato!
+        </div>
+      </div>
+    </div>
+
+    <div class="floating-icon" onclick="scrollToTop()">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
