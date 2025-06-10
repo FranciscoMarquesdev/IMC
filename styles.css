@@ -49,14 +49,10 @@ body {
   height: 200%;
   background: radial-gradient(
       circle at 20% 80%,
-      rgba(0, 0, 0, 0.3) 0%,
+      rgb(0, 0, 0) 0%,
       transparent 50%
     ),
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(0, 255, 115, 0.167) 0%,
-      transparent 50%
-    ),
+    radial-gradient(circle at 80% 20%, rgba(0, 0, 0, 0.167) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(1, 59, 12, 0.2) 0%, transparent 50%);
   animation: float 20s ease-in-out infinite;
 }
